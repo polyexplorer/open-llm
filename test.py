@@ -43,8 +43,7 @@ def langchain_llm():
         print("In Autocast, Inferencing")
         llm("What is the difference between a duck and a goose? And why there are so many Goose in Canada?")
 
-def qlora_llm():
-    prompt = "How many months are there in an year?"
+def local_langchain_llm(model_id):
     quantization_config = BitsAndBytesConfig(
         load_in_8bit=True,
         bnb_8bit_compute_dtype=torch.float16,
@@ -54,18 +53,18 @@ def qlora_llm():
     
 
     model = AutoModelForCausalLM.from_pretrained(
-        MODEL_ID, 
+        model_id, 
         device_map="auto",
         trust_remote_code=True,
         quantization_config=quantization_config,
         )
 
-    tokenizer = AutoTokenizer.from_pretrained(MODEL_ID,trust_remote_code=True)
-    stop_tokens = [prompt.split(" ")[:5]]
-    print("Stop Tokens:",stop_tokens)
-    stopping_criteria = StoppingCriteriaList(
-        [StopGenerationCriteria(stop_tokens, tokenizer, model.device)]
-    )
+    tokenizer = AutoTokenizer.from_pretrained(model_id,trust_remote_code=True)
+    # stop_tokens = [prompt.split(" ")[:5]]
+    # print("Stop Tokens:",stop_tokens)
+    # stopping_criteria = StoppingCriteriaList(
+    #     [StopGenerationCriteria(stop_tokens, tokenizer, model.device)]
+    # )
 
     generation_config = model.generation_config
     generation_config.temperature = 0
@@ -75,42 +74,49 @@ def qlora_llm():
     generation_config.repetition_penalty = 1.7
     generation_config.pad_token_id = tokenizer.eos_token_id
     generation_config.eos_token_id = tokenizer.eos_token_id
-    print("Loaded Model", MODEL_NAME)
+
+    print("Loaded Model", model_id)
+
     pipe = pipeline(
         model=model,
         tokenizer=tokenizer,
         return_full_text=True,
         task="text-generation",
-        stopping_criteria=stopping_criteria,
+        # stopping_criteria=stopping_criteria,
         generation_config=generation_config,
     )
 
-    local_llm = HuggingFacePipeline(pipeline=pipe)
-    print("Connected With Langchain!")
-    result = local_llm(prompt)
-    print(result)
-    
-    # print("Trainable Params:")
-    # model.print_trainable_parameters()
-    # lora_config = LoraConfig(
-    #     r=8,
-    #     lora_alpha=32,
-    #     target_modules=[
-    #         "query_key_value",
-    #         "dense",
-    #         "dense_h_to_4h",
-    #         "dense_4h_to_h",
-    #     ],
-    #     lora_dropout=0.05,
-    #     bias="none",
-    #     task_type="CAUSAL_LM"
-    # )
-    # model = get_peft_model(model, lora_config)
-    # print("Trainable Params (After PEFT):")
-    # model.print_trainable_parameters()
+    return HuggingFacePipeline(pipeline=pipe)
+def load_pdf(pdf_path):
+    pdf_reader = PdfReader(pdf)
+    text = ""
+    for page in pdf_reader.pages:
+        text += page.extract_text()
+
+    text_splitter = RecursiveCharacterTextSplitter(
+        chunk_size=1000,
+        chunk_overlap=200,
+        length_function=len
+        )
+    chunks = text_splitter.split_text(text=text)
+
+    # # embeddings
+    store_name = pdf.name[:-4]
+    st.write(f'{store_name}')
+    # st.write(chunks)
+
+    if os.path.exists(f"{store_name}.pkl"):
+        with open(f"{store_name}.pkl", "rb") as f:
+            VectorStore = pickle.load(f)
+        # st.write('Embeddings Loaded from the Disk')s
+    else:
+        embeddings = OpenAIEmbeddings()
+        VectorStore = FAISS.from_texts(chunks, embedding=embeddings)
+        with open(f"{store_name}.pkl", "wb") as f:
+            pickle.dump(VectorStore, f)
 
 def main():
-    qlora_llm()
+    local_langchain_llm(MODEL_ID)
 
 if __name__ == "__main__":
     main()
