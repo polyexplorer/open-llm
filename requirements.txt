@@ -1,5 +1,8 @@
 langchain
 transformers
+bitsandbytes
 accelerate
 peft
 einops
+scipy
+xformers
