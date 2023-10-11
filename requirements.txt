@@ -1,8 +1,9 @@
 langchain
+einops
+auto-gptq
+scipy
+xformers
 transformers
 bitsandbytes
 accelerate
 peft
-einops
-scipy
-xformers
