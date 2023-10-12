@@ -11,7 +11,7 @@ from langchain.embeddings import HuggingFaceEmbeddings, SentenceTransformerEmbed
 from langchain.vectorstores import Chroma
 from huggingface_hub import snapshot_download
 import torch
-protocol_pdf_path = "/content/drive/MyDrive/sample_protocol.pdf"
+protocol_pdf_path = "pdfs/405-201-00018_Protocol_Amendment_4.pdf"
 
 # model_name = "TheBloke/falcon-7b-instruct-GPTQ"
 model_name = "huggingface/falcon-40b-gptq"
@@ -27,8 +27,8 @@ class PDFQueryEngine:
     self.pdf_path = pdf_path
 
     self.model,self.tokenizer = self.create_model(self.llm_model_name)
-    print(f"Model '{self.model_id}'s Attention Heads are ")
-    for name, param in model.named_parameters():
+    print(f"Model '{self.llm_model_name}'s Attention Heads are ")
+    for name, param in self.model.named_parameters():
       if 'self_attn' in name:
           print(name)
 
@@ -43,14 +43,15 @@ class PDFQueryEngine:
     use_triton = False
 
     tokenizer = AutoTokenizer.from_pretrained(llm_model_name, use_fast=True)
-    return AutoGPTQForCausalLM.from_quantized(
+    return AutoModelForCausalLM.from_pretrained(
             llm_model_name,
-            model_basename=model_basename,
-            use_safetensors=True,
-            trust_remote_code=True,
-            device="cuda:0",
-            use_triton=use_triton,
-            quantize_config=None), tokenizer
+            # model_basename=model_basename,
+            use_safetensors=False,
+            trust_remote_code=False,
+            # device="cuda:0",
+            # use_triton=use_triton,
+            # quantize_config=None
+            ), tokenizer
 
   def create_langchain_llm(self, huggingface_model, tokenizer, generation_config =None):
     if not generation_config:
