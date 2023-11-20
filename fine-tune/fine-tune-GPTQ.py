@@ -177,7 +177,7 @@ def prepare_resources_for_training(model_id, data_path):
 
 def load_and_train(model_id, data_path,output_dir):
     
-    model, tokenizer, data = prepare_model_for_kbit_training(model_id, data_path)
+    model, tokenizer, data = prepare_resources_for_training(model_id, data_path)
 
     run_training(model, tokenizer, data, output_dir)
 
