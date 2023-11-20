@@ -180,7 +180,7 @@ def load_and_train(model_id, data_path,output_dir):
 
 
 def run_training_from_arguments(training_args_path):
-    with open(os.path.join(current_file_path,training_args_path),'r') as f:
+    with open(training_args_path,'r') as f:
         training_args = json.loads(f.read())
     model_id = training_args['model_id']
     data_path = training_args['data_path']
