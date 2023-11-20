@@ -1,6 +1,6 @@
 # Rel Imports
-from inference_utils import generate_prompt
-from utils import print_trainable_parameters 
+from .inference_utils import generate_prompt
+from .utils import print_trainable_parameters 
 
 # Misc Imports
 import json
