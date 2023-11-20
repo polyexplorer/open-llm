@@ -8,6 +8,9 @@ from transformers import GPTQConfig, AutoModelForCausalLM, Trainer, TrainingArgu
 from peft import prepare_model_for_kbit_training,LoraConfig, get_peft_model
 from datasets import load_dataset
 
+
+print("Current Directory:",os.getcwd())
+
 current_file_path = os.path.abspath(__file__)
 
 # Define a function to print the number of trainable parameters in the model
