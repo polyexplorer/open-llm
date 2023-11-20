@@ -94,6 +94,7 @@ def generate_prompt(data_point):
 def run_training(model,tokenizer,training_data, output_dir):
     
     # Split the Data in Train/Validation Set
+    data = data.train_test_split(test_size=0.1)
     train_data = training_data["train"]
     test_data = training_data["test"]
 
