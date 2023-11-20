@@ -1,13 +1,14 @@
 # Misc Imports
 import json
 import argparse
+import os
 
 # LLM Imports
 from transformers import GPTQConfig, AutoModelForCausalLM, Trainer, TrainingArguments, DataCollatorForLanguageModeling, pipeline,AutoTokenizer
 from peft import prepare_model_for_kbit_training,LoraConfig, get_peft_model
 from datasets import load_dataset
 
-
+current_file_path = os.path.abspath(__file__)
 
 # Define a function to print the number of trainable parameters in the model
 def print_trainable_parameters(model):
@@ -179,7 +180,7 @@ def load_and_train(model_id, data_path,output_dir):
 
 
 def run_training_from_arguments(training_args_path):
-    with open(training_args_path,'r') as f:
+    with open(os.path.join(current_file_path,training_args_path),'r') as f:
         training_args = json.loads(f.read())
     model_id = training_args['model_id']
     data_path = training_args['data_path']
