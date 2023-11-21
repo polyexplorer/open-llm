@@ -153,13 +153,13 @@ def run_training(model,tokenizer,training_data, output_dir):
     tokenizer.save_pretrained(output_dir)
 
 
-def prepare_resources_for_training(model_id, data_path):
+def prepare_resources_for_training(model_id,revision, data_path):
     # Model
 
     quantization_config_loading = GPTQConfig(bits=4, disable_exllama=True)
 
     # Load the pre-trained model with the specified quantization configuration
-    model = AutoModelForCausalLM.from_pretrained(model_id, quantization_config=quantization_config_loading, device_map="auto")
+    model = AutoModelForCausalLM.from_pretrained(model_id, revision = revision, quantization_config=quantization_config_loading, device_map="auto")
 
     # Load the tokenizer for the same pre-trained model and add an end-of-sequence token
     tokenizer = AutoTokenizer.from_pretrained(model_id, add_eos_token=True)
@@ -176,9 +176,9 @@ def prepare_resources_for_training(model_id, data_path):
 
 
 
-def load_and_train(model_id, data_path,output_dir):
+def load_and_train(model_id,revision, data_path,output_dir):
     
-    model, tokenizer, data = prepare_resources_for_training(model_id, data_path)
+    model, tokenizer, data = prepare_resources_for_training(model_id, revision, data_path)
 
     run_training(model, tokenizer, data, output_dir)
 
@@ -187,9 +187,10 @@ def run_training_from_arguments(training_args_path):
     with open(training_args_path,'r') as f:
         training_args = json.loads(f.read())
     model_id = training_args['model_id']
+    revision = training_args['revision']
     data_path = training_args['data_path']
     output_dir = training_args['output_dir']
-    load_and_train(model_id,data_path,output_dir)
+    load_and_train(model_id,revision,data_path,output_dir)
 
 
 def main():
