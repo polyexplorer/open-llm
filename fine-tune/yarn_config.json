@@ -1,0 +1,5 @@
+{
+    "model_id": "NousResearch/Yarn-Mistral-7b-64k",
+    "data_path": "training_data_full.json",
+    "output_dir": "yarn-mistral-7B-beta-64k-FineTuned-ProtocolScoring"
+}
