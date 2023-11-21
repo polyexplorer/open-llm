@@ -1,8 +1,11 @@
-transformers
+wheel
+git+https://github.com/huggingface/transformers
+flash_attn
 optimum
 auto-gptq --extra-index-url https://huggingface.github.io/autogptq-index/whl/cu118/  # Use cu117 if on CUDA 11.7
 accelerate
 bitsandbytes
+scipy
 datasets
 langchain
 einops
