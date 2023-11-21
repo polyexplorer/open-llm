@@ -104,8 +104,8 @@ def run_training(model,tokenizer,training_data, output_dir):
     # Set the Pad Token for Tokenizer (Use the EOS Token for this)
     tokenizer.pad_token = tokenizer.eos_token
 
-    # Enable gradient checkpointing for the model
-    model.gradient_checkpointing_enable()
+    # # Enable gradient checkpointing for the model
+    # model.gradient_checkpointing_enable()
 
     # Prepare the model for k-bit training using the "prepare_model_for_kbit_training" function
     model = prepare_model_for_kbit_training(model)
@@ -161,9 +161,6 @@ def run_training(model,tokenizer,training_data, output_dir):
 
 def prepare_resources_for_training(model_id, data_path):
     # Model
-
-    quantization_config_loading = GPTQConfig(bits=4, disable_exllama=True)
-
     # Load the pre-trained model with the specified quantization configuration
     model = AutoModelForCausalLM.from_pretrained(model_id,
     use_flash_attention_2=True,
