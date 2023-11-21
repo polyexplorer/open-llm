@@ -1,5 +1,5 @@
 {
     "model_id": "TheBloke/zephyr-7B-beta-GPTQ",
-    "data_path": "training_data.json",
+    "data_path": "training_data_full.json",
     "output_dir": "zephyr-7B-beta-GPTQ-FineTuned-ProtocolScoring"
 }
