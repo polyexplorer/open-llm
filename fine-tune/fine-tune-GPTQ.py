@@ -65,6 +65,8 @@ def generate_prompt(data_point):
     """
     # Check if the data point has additional context information
     instruction = "You are a good Question Answering Assistant. Given a Question and a relevant context, answer the question as truthfully as possible. If you don't know the answer, simply say 'I don't know'. Don't try to come up with an answer."
+    if data_point['text']:
+        return data_point['text']
     if data_point['input']:
         # Create a text with instruction, input, and response
         text = 'Below is an instruction that describes a task, paired with an input that provides' \
