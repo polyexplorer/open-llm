@@ -99,6 +99,9 @@ def run_training(model,tokenizer,training_data, output_dir):
     training_data = training_data.train_test_split(test_size=0.1)
     train_data = training_data["train"]
     test_data = training_data["test"]
+    
+    # Set the Pad Token for Tokenizer (Use the EOS Token for this)
+    tokenizer.pad_token = tokenizer.eos_token
 
     # Enable gradient checkpointing for the model
     model.gradient_checkpointing_enable()
