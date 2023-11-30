@@ -1,5 +1,5 @@
 {
-    "model_id": "TheBloke/Yarn-Mistral-7B-64k-GPTQ",
+    "model_id": "TheBloke/zephyr-7B-beta-GPTQ",
     "revision": "gptq-4bit-32g-actorder_True",
     "data_path": "training_data_normal.json",
     "output_dir": "zephyr-7B-beta-GPTQ-FineTuned-ProtocolScoring"
