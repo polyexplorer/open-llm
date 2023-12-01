@@ -137,7 +137,7 @@ def run_training(model,tokenizer,training_data, output_dir):
             per_device_train_batch_size=1,        # Batch size per device during training
             gradient_accumulation_steps=4,        # Number of gradient accumulation steps
             warmup_steps=0.03,                    # Number of warm-up steps for learning rate
-            max_steps=10,                        # Maximum number of training steps
+            max_steps=100,                        # Maximum number of training steps
             learning_rate=2e-4,                   # Learning rate
             fp16=True,                            # Enable mixed-precision training
             logging_steps=1,                      # Logging frequency during training
