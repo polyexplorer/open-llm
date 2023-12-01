@@ -1,0 +1,6 @@
+{
+    "model_id": "TheBloke/zephyr-7B-beta-GPTQ",
+    "revision": "gptq-4bit-32g-actorder_True",
+    "data_path": "message_data.json",
+    "output_dir": "zephyr-7B-beta-GPTQ-FineTuned-AtharvaImpersonator"
+}

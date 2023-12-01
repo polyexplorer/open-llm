@@ -173,7 +173,10 @@ def prepare_resources_for_training(model_id,revision, data_path):
     # Data
     
     data = load_dataset("json",data_files=data_path,split='train')
-    text_column = [generate_prompt(data_point) for data_point in data]
+    if not 'text' in data[0].keys():
+        text_column = [generate_prompt(data_point) for data_point in data]
+    else:
+        text_column = [x for x in data['text']]
     data = data.add_column("prompt", text_column)
     data = data.map(lambda samples: tokenizer(samples["prompt"]), batched=True)
     
